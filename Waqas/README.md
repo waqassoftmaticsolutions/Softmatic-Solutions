@@ -1,4 +1,4 @@
-# Console Based Calculator App
+## Console Based Calculator App
 
 This is a console based app using Kotlin Language. This app add, subtract, multiply, divide two numbers
 and can calculate expression of string also. The main purpose of this project is to learn Kotlin syntax. 
@@ -28,3 +28,9 @@ If the user enters 4 then program will be stoped otherwise it will not terminate
 
 ## Installation
 You have to use Replit.com and also IntellijA to run Kotlin Program
+
+##clone the repository 
+https://github.com/waqassoftmaticsolutions/Softmatic-Solutions.git
+
+## Change the directory into the project 
+cd Waqas
