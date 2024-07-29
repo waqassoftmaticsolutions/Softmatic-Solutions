@@ -29,10 +29,10 @@
    1) Useful when the object creation is very complex for example, Building a House with various rooms, windows, doors, and amenities. Instead of passing all these parameters to a single constructor, a builder allows you to set each component individually and then construct the final object.
    2) Objects with Many Optional Parameters
    ## Concept
-   i) Product CLass --> The name of the item like (Student)
-   ii) Abstract Class --> This is Builder Class that have members same as Product class (Student Builder have some methods inherited by Concrete classes like subjects addition methods)
-   iii) Concrete Classes --> These are classes that may inherit from the abstract classes and implement the methods
-   iv) Director Class --> This will call the Concrete Classes based on the types. This may contain a student builder variable.
+   1) Product CLass --> The name of the item like (Student)
+   2) Abstract Class --> This is Builder Class that have members same as Product class (Student Builder have some methods inherited by Concrete classes like subjects addition methods)
+   3) Concrete Classes --> These are classes that may inherit from the abstract classes and implement the methods
+   4) Director Class --> This will call the Concrete Classes based on the types. This may contain a student builder variable.
 
    
 ## 3) Prototype
@@ -50,9 +50,9 @@
    2) When Objects require extensive setup or initialization that makes it impractical to construct new instances directly.
    3) When You want to avoid creating multiple subclasses for different configurations or variations of an object.
    ## Concept
-   i) Create prototype interface
-   ii) Create concrete classes tro implement the prototype
-   iii) Create registery class to get track of all concrete class
+   1) Create prototype interface
+   2) Create concrete classes tro implement the prototype
+   3) Create registery class to get track of all concrete class
 
    
 ## 4) Factory 
@@ -68,9 +68,9 @@ It is a creational design pattern that provides an interface for creating object
    ## When to use
    1) The process of creating an object involves complex logic or multiple steps that should be encapsulated away from the client code. For example, Creating different types of Document objects (e.g., Report, Invoice, Letter) might involve complex setup that can be managed by a factory, rather than having the client handle the specifics.
    ## Concept
-   i) Create interface (Shape)
-   ii) Create concrete classes that implements the interface (like cirecle implements the shape)
-   iii) Create Factory class that will call the function based on the type of concrete class
+   1) Create interface (Shape)
+   2) Create concrete classes that implements the interface (like cirecle implements the shape)
+   3) Create Factory class that will call the function based on the type of concrete class
    
       
 ## 5) Abstract Factory
@@ -86,7 +86,7 @@ It is a creational design pattern that lets you produce families of related obje
    ## When to use
    1) When You need to create multiple related objects that are designed to work together. Each family of objects might be a different variant or style but still needs to adhere to a common interface. For example, In a UI framework, you might have different themes like DarkTheme and LightTheme. Each theme consists of a family of related objects, such as Button, TextField, and Scrollbar. The Abstract Factory can provide the appropriate set of UI components for the selected theme.
    ## Concept
-   i) Interface like Shape
-   ii) Concrete Classes that will implement Interface like circular rectangle
-   iii) Abstract Factory Class
-   iv) Concrete Class that inherits the abstract factory that is used to call the specific class.
+   1) Interface like Shape
+   2) Concrete Classes that will implement Interface like circular rectangle
+   3) Abstract Factory Class
+   4) Concrete Class that inherits the abstract factory that is used to call the specific class.
