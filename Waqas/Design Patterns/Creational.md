@@ -1,9 +1,4 @@
 ## Creational Design Pattern
-## Singleton
-## Builder
-## Prototype
-## Factory
-## Abstract Factory
 
 ## Singleton 
    Ensure that a class has only 1 instance providing a global access points to this instance
