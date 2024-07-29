@@ -1,82 +1,50 @@
-// State Interface
-interface State {
-    fun play(player: Player)
-    fun pause(player: Player)
-    fun stop(player: Player)
+//State is a behavioral design pattern that lets an object alter its behavior when its internal state changes. It appears as if the object changed its class.
+
+
+
+//State interface
+interface TrafficLightState{
+  fun handle(trafficLight:TrafficLight)
+}
+//concrete State
+class Green : TrafficLightState{
+  override fun handle(trafficLight:TrafficLight){
+    println("The traffic light is green,G0!")
+    trafficLight.state=Red()
+  }
 }
 
-// Concrete States
-class PlayingState : State {
-    override fun play(player: Player) {
-        println("Player is already playing.")
-    }
-
-    override fun pause(player: Player) {
-        println("Player is pausing.")
-        player.state = PausedState()
-    }
-
-    override fun stop(player: Player) {
-        println("Player is stopping.")
-        player.state = StoppedState()
-    }
+//concrete State
+class Yellow:TrafficLightState{
+  override fun handle(trafficLight:TrafficLight){
+    println("The traffic light is Yellow,Ready to Go!")
+    trafficLight.state=Green()
+  }
 }
 
-class PausedState : State {
-    override fun play(player: Player) {
-        println("Player is resuming.")
-        player.state = PlayingState()
-    }
-
-    override fun pause(player: Player) {
-        println("Player is already paused.")
-    }
-
-    override fun stop(player: Player) {
-        println("Player is stopping from paused state.")
-        player.state = StoppedState()
-    }
+//concrete State
+class Red:TrafficLightState{
+  override fun handle(trafficLight:TrafficLight){
+    println("The traffic light is Red,Stop!!")
+    trafficLight.state=Yellow()
+  }
 }
 
-class StoppedState : State {
-    override fun play(player: Player) {
-        println("Player is starting.")
-        player.state = PlayingState()
-    }
-
-    override fun pause(player: Player) {
-        println("Player is already stopped and cannot pause.")
-    }
-
-    override fun stop(player: Player) {
-        println("Player is already stopped.")
-    }
+//context class
+class TrafficLight(var state:TrafficLightState){
+  fun change(){
+    state.handle(this)
+  }
 }
 
-// Context
-class Player {
-    var state: State = StoppedState()
+fun main(){
+  
+      val trafficLight = TrafficLight(Green())
 
-    fun play() {
-        state.play(this)
-    }
+      trafficLight.change() 
+      trafficLight.change() 
+      trafficLight.change() 
+      trafficLight.change() 
+  
 
-    fun pause() {
-        state.pause(this)
-    }
-
-    fun stop() {
-        state.stop(this)
-    }
-}
-
-// Main Function
-fun main() {
-    val player = Player()
-
-    player.play()   
-    player.pause()  
-    player.play()   
-    player.stop()
-    player.pause() 
 }
