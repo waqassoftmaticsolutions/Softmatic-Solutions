@@ -4,7 +4,9 @@
 ## Prototype
 ## Factory
 ## Abstract Factory
-1) Singleton --> Ensure that a class has only 1 instance providing a global access points to this instance
+
+## Singleton 
+   Ensure that a class has only 1 instance providing a global access points to this instance
    ## Advantages
    1) Controlled Access --> Ensures that only one instance of the class is created, providing a global point of access.
    2) Resource Management --> Can be useful for managing shared resources, such as database connections or configuration settings.
@@ -18,7 +20,8 @@
    2) Database Connections --> Managing a single connection to a database (or a connection pool) through a Singleton can help in avoiding issues related to multiple connections and can ensure that resources are used efficiently.
 
    
-2) Builder --> Lets you to construct complex objects step by step. Allow you to produce different types and representations of an object using the same construction code
+## Builder
+   Lets you to construct complex objects step by step. Allow you to produce different types and representations of an object using the same construction code
    ## Advantages
    1) Complex Object Creation: Simplifies the creation of complex objects with many optional components or configurations.
    2) Immutability: Allows the creation of immutable objects, which are safer and easier to manage.
@@ -37,7 +40,8 @@
    Director Class --> This will call the Concrete Classes based on the types. This may contain a student builder variable.
 
    
-3) Prototype --> It is a creational pattern that allows you to create copies of existing objects without making your code dependent on their specific classes. It involves creating new objects by copying an existing object, known as the prototype. This pattern is particularly useful when the construction of a new object is costly or complex.
+## Prototype
+   It is a creational pattern that allows you to create copies of existing objects without making your code dependent on their specific classes. It involves creating new objects by copying an existing object, known as the prototype. This pattern is particularly useful when the construction of a new object is costly or complex.
    ## Advantages
    1) Performance: Can be more efficient than creating a new instance from scratch if object creation is costly and there are many similar objects.
    2) Flexible Object Creation: Allows for the creation of objects based on existing ones, making it easier to create variations of an object.
@@ -56,7 +60,8 @@
    Create registery class to get track of all concrete class
 
    
-4) Factory --> It is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. We create object without exposing the creation logic to the client and refer to newly created object using a common interface.
+## Factory 
+It is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. We create object without exposing the creation logic to the client and refer to newly created object using a common interface.
    ## Advantages
    1) Encapsulation: Encapsulates the creation logic of objects, which can help in managing and controlling the object creation process.
    2) Flexibility: Provides a way to create objects without specifying the exact class of object that will be created.
@@ -73,7 +78,8 @@
    Create Factory class that will call the function based on the type of concrete class
    
       
-6) Abstract Factory --> It is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
+## Abstract Factory
+It is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
    ## Advantages
    1) Consistency: Ensures that related objects are created in a consistent manner by encapsulating families of related products.
    2) Flexibility: Makes it easy to switch between different product families without altering the code that uses them.
