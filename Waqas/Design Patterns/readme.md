@@ -52,18 +52,38 @@
    Create registery class to get track of all concrete class
 
    
-4) Factory
+4) Factory --> It is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. We create object without exposing the creation logic to the client and refer to newly created object using a common interface.
    ## Advantages
-   1) 
+   1) Encapsulation: Encapsulates the creation logic of objects, which can help in managing and controlling the object creation process.
+   2) Flexibility: Provides a way to create objects without specifying the exact class of object that will be created.
+   3) Extension: Makes it easier to extend and modify object creation logic by adding new subclasses or factories.
    ## Disadvantages
-   1) 
+   1) Complexity: Can introduce additional complexity by adding multiple factory methods or classes.
+   2) Overhead: Increases the number of classes in the system, potentially leading to more complex code management.
+   3) Dependency Injection: If not designed properly, it may lead to tight coupling between the creator and the concrete classes.
    ## When to use
-   1)
-5) Abstract Factory
+   1) The process of creating an object involves complex logic or multiple steps that should be encapsulated away from the client code. For example, Creating different types of Document objects (e.g., Report, Invoice, Letter) might involve complex setup that can be managed by a factory, rather than having the client handle the specifics.
+   ## Concept
+   Create interface (Shape)
+   Create concrete classes that implements the interface (like cirecle implements the shape)
+   Create Factory class that will call the function based on the type of concrete class
+   
+      
+6) Abstract Factory --> It is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
    ## Advantages
-   1) 
+   1) Consistency: Ensures that related objects are created in a consistent manner by encapsulating families of related products.
+   2) Flexibility: Makes it easy to switch between different product families without altering the code that uses them.
+   3) Encapsulation: Encapsulates the creation of related objects, which can help in managing complex object creation scenarios.
    ## Disadvantages
-   1) 
+   1) Complexity: Can add significant complexity to the codebase due to the number of interfaces and concrete factories involved.
+   2) Overhead: May involve additional overhead in terms of design and maintenance of the abstract factory classes and interfaces.
+   3) Difficulty in Extending: Adding new product variants may require modifying existing abstract factories and implementations, which can impact existing code.
    ## When to use
-   1)
+   1) When You need to create multiple related objects that are designed to work together. Each family of objects might be a different variant or style but still needs to adhere to a common interface. For example, In a UI framework, you might have different themes like DarkTheme and LightTheme. Each theme consists of a family of related objects, such as Button, TextField, and Scrollbar. The Abstract Factory can provide the appropriate set of UI components for the selected theme.
+   ## Concept
+   Interface like Shape
+   Concrete Classes that will implement Interface like circular rectangle
+   Abstract Factory Class
+   Concrete Class that inherits the abstract factory that is used to call the specific class.
+   
 
