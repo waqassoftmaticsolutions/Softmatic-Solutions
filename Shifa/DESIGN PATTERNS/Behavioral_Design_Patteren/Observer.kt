@@ -1,67 +1,62 @@
-// Subject Interface
-interface Subject {
-    fun registerObserver(observer: Observer)
-    fun removeObserver(observer: Observer)
-    fun notifyObservers()
+// Define the Subscriber interface with a method to receive notifications
+interface Subscriber {
+    fun update(message: String)
 }
 
-// Observer Interface
-interface Observer {
-    fun update(temperature: Float)
+// Implement a concrete Subscriber class
+class ConcreteSubscriber(private val name: String) : Subscriber {
+    override fun update(message: String) {
+        println("$name received: $message")
+    }
 }
 
-// Concrete Subject
-class WeatherStation : Subject {
-    private val observers = mutableListOf<Observer>()
-    private var temperature: Float = 0.0f
+// Define the Publisher class
+class Publisher {
+    private val subscribers = mutableListOf<Subscriber>()
 
-    override fun registerObserver(observer: Observer) {
-        observers.add(observer)
+    // Method to add a subscriber
+    fun subscribe(subscriber: Subscriber) {
+        subscribers.add(subscriber)
     }
 
-    override fun removeObserver(observer: Observer) {
-        observers.remove(observer)
+    // Method to remove a subscriber
+    fun unsubscribe(subscriber: Subscriber) {
+        subscribers.remove(subscriber)
     }
 
-    override fun notifyObservers() {
-        for (observer in observers) {
-            observer.update(temperature)
+    // Method to notify all subscribers about an event
+    fun notifySubscribers(message: String) {
+        for (subscriber in subscribers) {
+            subscriber.update(message)
         }
     }
 
-    fun setTemperature(temp: Float) {
-        println("WeatherStation: New temperature is $temp")
-        temperature = temp
-        notifyObservers()
+    // Simulate an event that triggers notifications
+    fun eventHappened() {
+        notifySubscribers("An important event has occurred!")
     }
 }
 
-// Concrete Observer
-class Display : Observer {
-    private var temperature: Float = 0.0f
-
-    override fun update(temperature: Float) {
-        this.temperature = temperature
-        display()
-    }
-
-    fun display() {
-        println("Display: Current temperature is $temperature")
-    }
-}
-
-// Main Function
+// Example usage
 fun main() {
-    val weatherStation = WeatherStation()
-    val display1 = Display()
-    val display2 = Display()
+    val publisher = Publisher()
 
-    weatherStation.registerObserver(display1)
-    weatherStation.registerObserver(display2)
+    // Create subscribers
+    val subscriber1 = ConcreteSubscriber("Subscriber 1")
+    val subscriber2 = ConcreteSubscriber("Subscriber 2")
+    val subscriber3 = ConcreteSubscriber("Subscriber 3")
 
-    weatherStation.setTemperature(25.0f)
-    weatherStation.setTemperature(30.0f)
+    // Subscribe to the publisher
+    publisher.subscribe(subscriber1)
+    publisher.subscribe(subscriber2)
+    publisher.subscribe(subscriber3)
 
-    weatherStation.removeObserver(display1)
-    weatherStation.setTemperature(28.0f)
+    // Trigger an event
+    publisher.eventHappened()
+
+    // Unsubscribe one subscriber
+    publisher.unsubscribe(subscriber2)
+
+    // Trigger another event
+    publisher.eventHappened()
 }
