@@ -20,9 +20,10 @@ The web server architecture generally contains the following three roles-
   The Subscriber is nothing but, the service requester. The Service requester is the one that needs to contact the web service. The client application will contact through a client application. This Client application can be based on .Net or any language based language.
 3) Broker
    The broker here is the application that provides access to the UDDI. The UDDI stands for User descriptive, discovery and integration. It enables the client application to locate the web service exactly.
-Publish --> Publishers Publishing the web services means informing the broker about its existence. It is done using the Broker’s interface to make is easily accessible to the subscribers
-Subscribe --> The Subscriber will consult the broker to locate the published web service easily .
-Bind --> Once the information regarding the web services is gained from the broker, the subscriber can bind the web service.
+   
+      1) Publish --> Publishers Publishing the web services means informing the broker about its existence. It is done using the Broker’s interface to make is easily accessible to the subscribers
+      2) Subscribe --> The Subscriber will consult the broker to locate the published web service easily .
+      3) Bind --> Once the information regarding the web services is gained from the broker, the subscriber can bind the web service.
 
 ## Characteristics of Web Services in Android
 1) Web services are loosely coupled
@@ -54,3 +55,13 @@ Bind --> Once the information regarding the web services is gained from the brok
     4) It uses XML messages to perform Remote Calls.
     5) XML- RPC is platform-independent as well as Language independent.
     6) It also allows diverse applications to communicate with each other.
+
+## Advantages of using Web Services
+1) Web services enable interoperability among different Applications.
+2) Web services offer faster communications within and across applications and organizations.
+3) They allow us to expose the functions of the existing code over the internet.
+4) One of the very important advantages of using web services is Reusability.
+
+## Limitations of Web Services over Android
+1) The HTTP protocol used by web services is not reliable and is insecure.
+2) Web services do not access from the browser.
