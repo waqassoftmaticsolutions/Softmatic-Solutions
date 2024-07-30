@@ -128,3 +128,143 @@ REST is designed to be simple and scalable, making it suitable for web services 
 2. They don’t leverage emerging Web developments(Web services might not take full advantage of the latest technologies and advancements on the web.)
 3. The HTTP protocol used by web services is not reliable and is insecure.
 
+
+## Difference b/w RESTful and SOAP
+The architecture of SOAP (Simple Object Access Protocol) involves several components and standards that work together to enable communication between distributed systems. Here’s a detailed overview of SOAP architecture:
+
+### **1. SOAP Envelope**
+
+- **Purpose**: The SOAP envelope is the root element of a SOAP message. It defines the start and end of the message and contains two main parts: the header and the body.
+- **Structure**:
+  - **Header**: Optional. Contains metadata or control information like authentication, message routing, and transaction management.
+  - **Body**: Required. Contains the actual message or request/response data. It holds the payload of the SOAP message.
+
+  ```xml
+  <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+      <soap:Header>
+          <!-- Optional header information -->
+      </soap:Header>
+      <soap:Body>
+          <!-- The actual message content -->
+      </soap:Body>
+  </soap:Envelope>
+  ```
+
+### **2. SOAP Header**
+
+- **Purpose**: The SOAP header is an optional part of the envelope that contains metadata for processing the message. It can include information such as security credentials, transaction identifiers, and routing information.
+- **Characteristics**:
+  - **Extensible**: Can be used to add various types of metadata.
+  - **Optional**: Not all SOAP messages include a header.
+
+  ```xml
+  <soap:Header>
+      <m:Authentication xmlns:m="http://www.example.com/auth">
+          <m:Username>user</m:Username>
+          <m:Password>pass</m:Password>
+      </m:Authentication>
+  </soap:Header>
+  ```
+
+### **3. SOAP Body**
+
+- **Purpose**: The SOAP body is the required part of the envelope that contains the main message content. It carries the request or response payload.
+- **Characteristics**:
+  - **Contains the Main Data**: The actual data or instructions being transmitted.
+  - **Error Handling**: If there are faults or errors, they are included in the body.
+
+  ```xml
+  <soap:Body>
+      <m:GetUserResponse xmlns:m="http://www.example.com/user">
+          <m:User>
+              <m:UserId>123</m:UserId>
+              <m:UserName>John Doe</m:UserName>
+          </m:User>
+      </m:GetUserResponse>
+  </soap:Body>
+  ```
+
+### **4. SOAP Fault**
+
+- **Purpose**: The SOAP fault is an optional element within the body used to indicate errors or problems that occurred during message processing.
+- **Structure**:
+  - **faultcode**: Indicates the type of error.
+  - **faultstring**: Provides a human-readable description of the error.
+  - **faultactor**: Identifies the actor that caused the fault.
+  - **detail**: Contains additional information about the fault.
+
+  ```xml
+  <soap:Fault>
+      <faultcode>soap:Server</faultcode>
+      <faultstring>Server encountered an error</faultstring>
+      <detail>
+          <m:ErrorDetail xmlns:m="http://www.example.com/error">
+              <m:Message>Invalid input data</m:Message>
+          </m:ErrorDetail>
+      </detail>
+  </soap:Fault>
+  ```
+
+### **5. WSDL (Web Services Description Language)**
+
+- **Purpose**: WSDL is an XML-based language used to describe the functionality offered by a SOAP web service. It defines the operations available, the input and output messages, and the protocols used.
+- **Components**:
+  - **Types**: Data types used by the web service.
+  - **Messages**: Definitions of the data being exchanged.
+  - **Port Types**: Operations supported by the service.
+  - **Bindings**: Details on how the service is accessed (e.g., SOAP over HTTP).
+  - **Services**: Addresses where the service can be accessed.
+
+  ```xml
+  <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <wsdl:message name="GetUserRequest">
+          <wsdl:part name="parameters" element="xsd:GetUser"/>
+      </wsdl:message>
+      <wsdl:message name="GetUserResponse">
+          <wsdl:part name="parameters" element="xsd:GetUserResponse"/>
+      </wsdl:message>
+      <wsdl:portType name="UserServicePortType">
+          <wsdl:operation name="GetUser">
+              <wsdl:input message="tns:GetUserRequest"/>
+              <wsdl:output message="tns:GetUserResponse"/>
+          </wsdl:operation>
+      </wsdl:portType>
+      <wsdl:binding name="UserServiceBinding" type="tns:UserServicePortType">
+          <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+          <wsdl:operation name="GetUser">
+              <soap:operation soapAction="http://www.example.com/GetUser"/>
+              <wsdl:input>
+                  <soap:body use="literal"/>
+              </wsdl:input>
+              <wsdl:output>
+                  <soap:body use="literal"/>
+              </wsdl:output>
+          </wsdl:operation>
+      </wsdl:binding>
+      <wsdl:service name="UserService">
+          <wsdl:port name="UserServicePort" binding="tns:UserServiceBinding">
+              <soap:address location="http://www.example.com/UserService"/>
+          </wsdl:port>
+      </wsdl:service>
+  </wsdl:definitions>
+  ```
+
+### **6. SOAP Protocols and Standards**
+
+- **Transport Protocol**: SOAP messages are typically transported over HTTP or HTTPS, but they can also be sent over other protocols like SMTP or JMS.
+- **Encoding**: SOAP uses XML encoding for data representation.
+- **Security**: SOAP can use WS-Security to provide various security features like encryption, digital signatures, and token-based authentication.
+
+### **Summary**
+
+The SOAP architecture consists of the following key components:
+- **SOAP Envelope**: Contains the header and body of the message.
+- **SOAP Header**: Optional metadata and control information.
+- **SOAP Body**: Contains the actual message content and faults.
+- **SOAP Fault**: Indicates errors and provides details about them.
+- **WSDL**: Describes the web service’s functionality and how to interact with it.
+- **Protocols and Standards**: Defines how SOAP messages are transported and secured.
+
+These components work together to ensure that SOAP provides a robust and formal mechanism for communication between distributed systems.
