@@ -29,6 +29,8 @@ The Subscriber will consult the broker to locate the published web service easil
 
 ### c. Bind
 
+Once the information regarding the web services is gained from the broker, the subscriber can bind the web service.
+
 ## Characteristics of web services in Android into simpler terms:
 
 1. **XML-Based**:
