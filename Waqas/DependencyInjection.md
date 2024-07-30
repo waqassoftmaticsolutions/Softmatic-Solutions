@@ -13,8 +13,7 @@ Here in the aqbove example UserRepository is dependency of UserService because U
 
 Injection --> Injection refers to the process of providing dependencies to an object from an external source rather than creating them within the object. This can be done through various methods such as constructors, setters, or interfaces.
 # Types of Injectiontion
-  ###
-  1) Constructor Injection --> Dependencies are added through class constructor.
+  ### 1) Constructor Injection --> Dependencies are added through class constructor.
 ```kotlin
      // User.kt
       data class User(val id: Int, val name: String)
