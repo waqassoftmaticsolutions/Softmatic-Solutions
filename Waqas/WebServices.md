@@ -69,3 +69,54 @@ The web server architecture generally contains the following three roles-
 ## Limitations of Web Services over Android
 1) The HTTP protocol used by web services is not reliable and is insecure.
 2) Web services do not access from the browser.
+
+# What is key differnce between REST and SOAP?
+<table border="0">
+ <tr>
+    <td><b style="font-size:50px">REST</b></td>
+    <td><b style="font-size:50px">SOAP</b></td>
+ </tr>
+ <tr>
+    <td>REST is an architecture style for designing communication interfaces.</td>
+    <td>SOAP is a protocol for communication between applications</td>
+ </tr>
+  <tr>
+    <td>REST APIs are data-driven.  For example, consider an application with employee data that other applications can manipulate. The application's REST API could expose a URL called /employees, and a POST request to that URL would create a new employee record.</td>
+    <td>The SOAP API exposes functions or operations. For example, consider an application with employee data that other applications can manipulate. The application's SOAP API could expose a function called CreateEmployee. To create an employee, you would specify the function name in your SOAP message when sending a request.</td>
+ </tr>
+  <tr>
+    <td>REST is JSON based</td>
+    <td>SOAP is XML based</td>
+ </tr>
+  <tr>
+    <td>REST message size is smaller than SOAP</td>
+    <td>SOAP message size is higher than REST</td>
+ </tr>
+  <tr>
+    <td>Typical used in Web, mobile applications , microservices</td>
+    <td>Typical used in Enterprise applications, high security, banking apps</td>
+ </tr>
+</table>
+
+# Why Bandwidth of REST is less than SOAP?
+<table border="0">
+ <tr>
+    <td><b style="font-size:50px">REST</b></td>
+    <td><b style="font-size:50px">SOAP</b></td>
+ </tr>
+ <tr>
+    <td>Typically uses JSON or plain text, which are more compact and less verbose than XML.</td>
+    <td>Uses XML, which is more verbose due to its complex structure with opening and closing tags for each element.</td>
+ </tr>
+   <tr>
+    <td>Has minimal overhead. It uses standard HTTP methods (GET, POST, PUT, DELETE) and doesn't require additional envelope or header structures.</td>
+    <td>Requires a SOAP envelope to encapsulate the message, which adds to the size of the message.</td>
+ </tr>
+  </tr>
+   <tr>
+    <td>JSON is compact and easy to parse, reducing the amount of data transmitted over the network.</td>
+    <td>XML's complex structure with opening and closing tags for each element increases the message size.</td>
+ </tr>
+</tr>
+   
+</table>
