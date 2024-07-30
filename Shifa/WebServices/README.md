@@ -31,7 +31,7 @@ The Subscriber will consult the broker to locate the published web service easil
 
 Once the information regarding the web services is gained from the broker, the subscriber can bind the web service.
 
-## Characteristics of web services in Android into simpler terms:
+## Characteristics of web services:
 
 1. **XML-Based**:
    - Web services use XML (Extensible Markup Language) to represent and transfer data. 
