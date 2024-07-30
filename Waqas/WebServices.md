@@ -34,20 +34,24 @@ The web server architecture generally contains the following three roles-
 ## Types of Web Services in Android
 1) SOAP
    1) Simple Object Access Protocol
-   2) It is an XML based protocol for accessing web services over HTTP or SMTP
-   3) SOAP is W3C (World Wide Web Consortium) recomendation for communication between applications
-   4) It is plateform independent and language independent
-   5) You will be able to interact with other programming language
+   2) SOAP is a protocol for exchanging structured information in the implementation of web services
+   3) It is an XML based protocol for accessing web services over HTTP or SMTP
+   4) SOAP is W3C (World Wide Web Consortium) recomendation for communication between applications
+   5) It is plateform independent and language independent
+   6) You will be able to interact with other programming language
+   7) Used in Banking applications to ensure secure transactions
 2) UDDI
     1) Universal Description Discovery and Integration
     2) It is an XML- based standard used for detailing, publishing and discovering new web services.
     3) Capabilities for sharing informations about web services within an organization's intranet between business partners on an extranet or on the internet
+    4) Used in Content Management Systems to integrate different CMS and distribute content
 3) REST
     1) RESTFUL API
     2) REST is Representational State Transfer.
     3) It is an architrectural style for an Application Program Interface (API) HTTP request to access and user data
     4) REST technology is preffered over other similar technologies because REST use less bandwidth, making it more suitable for efficient internet usage.
     5) RESTFUL APIs can be built using any technology
+    6) Used in E-commerece apps, Social media integrations etc.
 4) XML-RPC
     1) In XML-RPC, RPC stands for remote procedure calls.
     2) It is among simplest and most foolproof web service approach that make it easy for computers to call procedures on other computers remotely.
