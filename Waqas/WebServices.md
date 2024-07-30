@@ -118,7 +118,5 @@ The web server architecture generally contains the following three roles-
     <td>XML's complex structure with opening and closing tags for each element increases the message size.</td>
  </tr>
 </tr>
-   ![image](https://github.com/user-attachments/assets/82f31bcd-847d-467e-8915-9fbfd355c1cd)
-
 </table>
 
