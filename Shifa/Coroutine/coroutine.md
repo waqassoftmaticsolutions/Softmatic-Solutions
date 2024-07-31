@@ -129,17 +129,33 @@ fun main() = runBlocking {
 }
 ```
 
-### Explanation:
-
-- **`runBlocking`**: This is used to start the main coroutine scope and wait for all child coroutines to complete.
-- **`repeat(50000)`**: Launches 50,000 coroutines.
-- **`launch`**: Each coroutine waits for 5 seconds (using `delay(5000L)`) and then prints a period (`.`). Note that `delay` is non-blocking.
-- **`delay(6000L)`**: Waits for an additional 6 seconds to ensure all coroutines finish printing their periods before the program exits.
 
 ### Benefits:
 
 - **Memory Efficiency**: This code runs 50,000 coroutines concurrently without using excessive memory, showcasing the lightweight nature of coroutines.
 - **Performance**: Despite the large number of coroutines, the performance remains efficient because coroutines do not consume as much memory or require heavy context switching compared to threads.
 
-In summary, coroutines are lightweight due to their minimal memory footprint, efficient context switching, non-blocking suspension, and scalability. This makes them a powerful tool for handling many concurrent tasks without overwhelming system resources.
+## Cancelling coroutine execution
+```kotlin
+val job = launch {
+    repeat(1000) { i ->
+        println("job: I'm sleeping $i ...")
+        delay(500L)
+    }
+}
+delay(1300L) // delay a bit (jb tk is delay ka time ni aata coroutine chalta jay ga,jesy e ye time complete hua nechy wali line print hogi or phir job cancel hujay gi..beshak abhi wo 1000 time print hua ho ya na)
+println("main: I'm tired of waiting!")
+job.cancel() // cancels the job
+job.join() // waits for job's completion 
+println("main: Now I can quit.")
+```
+## Output
+```kotlin
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+main: Now I can quit.
+```
+
 
