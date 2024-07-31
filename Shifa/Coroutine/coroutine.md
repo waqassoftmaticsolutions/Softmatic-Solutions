@@ -158,4 +158,202 @@ main: I'm tired of waiting!
 main: Now I can quit.
 ```
 
+## Default Dispatcher:
 
+#### Dispatchers.Default: 
+Uses a shared pool of threads optimized for CPU-bound tasks. It provides more parallelism and can run multiple coroutines concurrently on different threads.
+
+## Cancelation is Cooperative
+Coroutine cancellation is cooperative. A coroutine code has to cooperate to be cancellable. All the suspending functions in kotlinx.coroutines are cancellable. They check for cancellation of coroutine and throw CancellationException when cancelled. However, if a coroutine is working in a computation and does not check for cancellation, then it cannot be cancelled, like the following example shows:
+
+```kotlin
+val startTime = System.currentTimeMillis()
+val job = launch(Dispatchers.Default) {
+    var nextPrintTime = startTime
+    var i = 0
+    while (i < 5) { // computation loop, just wastes CPU
+        // print a message twice a second
+        if (System.currentTimeMillis() >= nextPrintTime) {
+            println("job: I'm sleeping ${i++} ...")
+            nextPrintTime += 500L
+        }
+    }
+}
+delay(1300L) // delay a bit
+println("main: I'm tired of waiting!")
+job.cancelAndJoin() // cancels the job and waits for its completion
+println("main: Now I can quit.")
+
+```
+# Output
+```kotlin
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+job: I'm sleeping 3 ...
+job: I'm sleeping 4 ...
+main: Now I can quit.
+```
+# code
+
+```kotlin
+
+val job = launch(Dispatchers.Default) {
+    repeat(5) { i ->
+        try {
+            // print a message twice a second
+            println("job: I'm sleeping $i ...")
+            delay(500)
+        } catch (e: Exception) {
+            // log the exception
+            println(e)
+        }
+    }
+}
+delay(1300L) // delay a bit
+println("main: I'm tired of waiting!")
+job.cancelAndJoin() // cancels the job and waits for its completion
+println("main: Now I can quit.")
+
+```
+# output
+```kotlin
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job="coroutine#2":StandaloneCoroutine{Cancelling}@64f99317
+job: I'm sleeping 3 ...
+kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job="coroutine#2":StandaloneCoroutine{Cancelling}@64f99317
+job: I'm sleeping 4 ...
+kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job="coroutine#2":StandaloneCoroutine{Cancelling}@64f99317
+main: Now I can quit.
+```
+## Making computation code cancellable﻿
+```kotlin
+val startTime = System.currentTimeMillis()
+val job = launch(Dispatchers.Default) {
+    var nextPrintTime = startTime
+    var i = 0
+    while (isActive) { // cancellable computation loop
+        // print a message twice a second
+        if (System.currentTimeMillis() >= nextPrintTime) {
+            println("job: I'm sleeping ${i++} ...")
+            nextPrintTime += 500L
+        }
+    }
+}
+delay(1300L) // delay a bit
+println("main: I'm tired of waiting!")
+job.cancelAndJoin() // cancels the job and waits for its completion
+println("main: Now I can quit.")
+```
+# Output
+```kotlin
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+main: Now I can quit.
+```
+isma ye horha ha k isActive function ko jb bhi cancel mily ga ye execution krna tb e bnd kry ga phir wo simple cancel ho ya cancelAndJoin
+```kotlin
+val job = launch {
+    try {
+        repeat(10) { i ->
+            println("job: I'm sleeping $i ...")
+            delay(500L)
+        }
+    } finally {
+        println("job: I'm running finally")
+        
+    }
+}
+delay(1300L) // delay a bit
+println("main: I'm tired of waiting!")
+job.cancelAndJoin() // cancels the job and waits for its completion
+println("main: Now I can quit.")
+```
+# Output
+```kotlin
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+job: I'm running finally
+main: Now I can quit.
+```
+# Run non-cancellable block﻿
+```kotlin
+val job = launch {
+    try {
+        repeat(1000) { i ->
+            println("job: I'm sleeping $i ...")
+            delay(500L)
+        }
+    } finally {
+        withContext(NonCancellable) {
+            println("job: I'm running finally")
+            delay(1000L)
+            println("job: And I've just delayed for 1 sec because I'm non-cancellable")
+        }
+    }
+}
+delay(1300L) // delay a bit
+println("main: I'm tired of waiting!")
+job.cancelAndJoin() // cancels the job and waits for its completion
+println("main: Now I can quit.")
+```
+# Output
+```kotlin
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+job: I'm running finally
+job: And I've just delayed for 1 sec because I'm non-cancellable
+main: Now I can quit.
+```
+# TimeOut
+```kotlin
+withTimeout(1300L) {
+    repeat(1000) { i ->
+        println("I'm sleeping $i ...")
+        delay(500L)
+    }
+}
+```
+# Output
+```kotlin
+I'm sleeping 0 ...
+I'm sleeping 1 ...
+I'm sleeping 2 ...
+Exception in thread "main" kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 1300 ms
+ at _COROUTINE._BOUNDARY._ (CoroutineDebugging.kt:46) 
+ at FileKt$main$1$1.invokeSuspend (File.kt:-1) 
+ at FileKt$main$1.invokeSuspend (File.kt:-1) 
+Caused by: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 1300 ms
+at kotlinx.coroutines.TimeoutKt .TimeoutCancellationException(Timeout.kt:191)
+at kotlinx.coroutines.TimeoutCoroutine .run(Timeout.kt:159)
+at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask .run(EventLoop.common.kt:501)
+```
+## TimeOut and null function
+Use the withTimeoutOrNull function that is similar to withTimeout but returns null on timeout instead of throwing an exception:
+
+```kotlin
+val result = withTimeoutOrNull(1300L) {
+    repeat(1000) { i ->
+        println("I'm sleeping $i ...")
+        delay(500L)
+    }
+    "Done" // will get cancelled before it produces this result
+}
+```
+# Output
+```kotlin
+I'm sleeping 0 ...
+I'm sleeping 1 ...
+I'm sleeping 2 ...
+Result is null
+```
