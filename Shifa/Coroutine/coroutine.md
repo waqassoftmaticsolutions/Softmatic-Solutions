@@ -24,7 +24,11 @@ If you remove or forget runBlocking in this code, you'll get an error on the lau
 Acts as the task manager. It ensures that all coroutines started within it are completed before exiting.
 #### **launch:** 
 Starts a new coroutine (task). The runBlocking scope makes sure this coroutine finishes before the program exits.
-
+## Difference b/w suspend and normal function
+#### **Normal Functions:** 
+Block the thread, execute synchronously, and cannot be suspended or resumed.
+#### Coroutine Functions: 
+Allow non-blocking operations, can suspend and resume, and are managed asynchronously.
 ### Extract function refactoring (Suspend functions)
 When you perform "Extract function" refactoring on this code, you get a new function with the suspend modifier. 
 Suspending functions can be used inside coroutines just like regular functions, but their additional feature is that they can, in turn, use other suspending functions (like delay in this example) to suspend execution of a coroutine.
