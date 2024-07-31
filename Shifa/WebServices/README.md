@@ -128,8 +128,37 @@ REST is designed to be simple and scalable, making it suitable for web services 
 2. They don’t leverage emerging Web developments(Web services might not take full advantage of the latest technologies and advancements on the web.)
 3. The HTTP protocol used by web services is not reliable and is insecure.
 
-
 ## Difference b/w RESTful and SOAP
+ - SOAP is protocol
+ - HTTP is architectural style
+ - **But what is diiference b/w protocol and architectural design**
+ - **Protocol:** Deals with the specific rules and formats for communication and data exchange between systems or components.
+ - **Architectural Style:** Deals with the overall design and structure of an application or system, including how components interact and are organized.
+#### Language
+- SOAP uses XML
+- REST uses Json
+#### Access
+- SOAP uses defined service interface,which is typically described using WSDL(web service description protocol)
+- REST used URL's to access the resources
+#### Interactions
+- Requires using a predefined set of operations as described in the WSDL
+- Interacts with resources through URL's and HTTP methods.There is no strict contract and API is more intuitive and flexible.
+#### security
+- SOAP used the WS-Security protocol,which is more effieicient as copared to SSL,has buil-in security mechanism
+- Typically relies on HTTPS and can use various authentication methods like OAuth etc, Relsies on external standard protocol
+#### Stateless
+- REST is stateless means each request from client to server must contain all the onfo needed to understand and process the request server not store any client context
+- Support stateful operations,beneficial in many cases but adds complexity
+#### Message Size
+- Rest message size is smaller than SOAP
+- SOAP message size ishigher than REST
+#### Usage
+- Typically used in web,mobile apps,mcroservices
+- Typically used in enterprise app,high security banking apps
+
+
+
+## Difference b/w RESTful and SOAP Architecture
 The architecture of SOAP (Simple Object Access Protocol) involves several components and standards that work together to enable communication between distributed systems. Here’s a detailed overview of SOAP architecture:
 
 ### **1. SOAP Envelope**
