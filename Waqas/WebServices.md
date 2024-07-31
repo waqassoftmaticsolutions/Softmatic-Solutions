@@ -120,3 +120,49 @@ The web server architecture generally contains the following three roles-
 </tr>
 </table>
 
+# REST Structure
+Request and Response structure is 
+
+### Request
+```json
+GET /users/123 HTTP/1.1
+```
+### Response
+```json
+{
+  "id": 123,
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+```
+
+# SOAP Structure
+Request and Response structure is 
+
+### Request
+```XML
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <ns:GetUserDetails xmlns:ns="http://example.com/">
+      <ns:UserId>123</ns:UserId>
+    </ns:GetUserDetails>
+  </soapenv:Body>
+</soapenv:Envelope>
+
+```
+### Response
+```XML
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <ns:GetUserDetailsResponse xmlns:ns="http://example.com/">
+      <ns:User>
+        <ns:Id>123</ns:Id>
+        <ns:Name>John Doe</ns:Name>
+        <ns:Email>john.doe@example.com</ns:Email>
+      </ns:User>
+    </ns:GetUserDetailsResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
+```
