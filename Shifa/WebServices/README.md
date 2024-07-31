@@ -156,6 +156,45 @@ REST is designed to be simple and scalable, making it suitable for web services 
 - Typically used in web,mobile apps,mcroservices
 - Typically used in enterprise app,high security banking apps
 
+# Why Bandwidth of REST is less than SOAP?
+<table border="0">
+ <tr>
+    <td><b style="font-size:50px">REST</b></td>
+    <td><b style="font-size:50px">SOAP</b></td>
+ </tr>
+ <tr>
+    <td>Typically uses JSON or plain text, which are more compact and less verbose than XML.</td>
+    <td>Uses XML, which is more verbose due to its complex structure with opening and closing tags for each element.</td>
+ </tr>
+   <tr>
+    <td>Has minimal overhead. It uses standard HTTP methods (GET, POST, PUT, DELETE) and doesn't require additional envelope or header structures.</td>
+    <td>Requires a SOAP envelope to encapsulate the message, which adds to the size of the message.</td>
+ </tr>
+  </tr>
+   <tr>
+    <td>JSON is compact and easy to parse, reducing the amount of data transmitted over the network.</td>
+    <td>XML's complex structure with opening and closing tags for each element increases the message size.</td>
+ </tr>
+</tr>
+</table>
+
+# REST Structure
+Request and Response structure is 
+
+### Request
+```json
+GET /users/123 HTTP/1.1
+```
+### Response
+```json
+{
+  "id": 123,
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+```
+
+# SOAP Structure
 
 
 ## Difference b/w RESTful and SOAP Architecture
