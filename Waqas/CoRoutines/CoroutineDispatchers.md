@@ -39,7 +39,6 @@ Running on thread: DefaultDispatcher-worker-1 @coroutine#2
 import kotlinx.coroutines.*
 import kotlin.random.Random
 fun main() = runBlocking {
-    // Create a list of 3 integers: 1, 2, 3
     val numbers = List(1000){(Random.nextInt(1,100))}
     println("Starting computations on thread: ${Thread.currentThread().name}")
     // Switch to the Default dispatcher for the computation
@@ -54,9 +53,9 @@ fun main() = runBlocking {
 #### Output
 ```text
 Starting computations on thread: main @coroutine#1
-Thread on which we are performing computations : DefaultDispatcher-worker-1 @coroutine#2
+Thread on which we are performing computations : DefaultDispatcher-worker-1 @coroutine#1
 Finished computations on thread: main @coroutine#1
-Sum of squares: "coroutine#2":StandaloneCoroutine{Active}@1ae369b7
+Sum of squares: 3288079
 ```
 
 ### Unconfined Dispatcher
