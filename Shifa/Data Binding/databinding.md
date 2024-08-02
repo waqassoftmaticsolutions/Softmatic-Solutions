@@ -105,3 +105,100 @@ class MainActivity : AppCompatActivity() {
     }
 }
 ```
+# Two Way DataBinding
+Two-way data binding allows you to automatically transfer data from user input back into your data model. If we want to support two-way binding so we have to use “@={expression}” syntax for two-way binding:
+### MainActivity.kt
+```kotlin
+package com.example.myapplication
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.example.myapplication.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var user: User
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+
+        user = User().apply {
+            name.set("Moiz")
+            age.set("16")
+        }
+
+        binding.lifecycleOwner = this
+        binding.user = user
+    }
+
+
+
+
+}
+```
+### User.kt
+```kotlin
+class User{
+    var name= ObservableField<String>("")
+    var age=ObservableField<String>("")
+}
+```
+### XML
+```kotlin
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="user"
+            type="com.example.myapplication.User" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example of Two-Way Data Binding"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your name"
+            android:text="@={user.name}" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your age"
+            android:text="@={user.age}" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Displaying Data"/>
+
+
+        <TextView
+            android:id="@+id/infoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`Name: ` + user.name + ` Age: ` + user.age}"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</layout>
+```
