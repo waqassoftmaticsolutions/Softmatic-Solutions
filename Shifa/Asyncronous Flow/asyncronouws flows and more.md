@@ -64,3 +64,302 @@ Both asynchronous flows and sequences in Kotlin are used to handle collections o
   - Does not support concurrency or asynchronous data handling.
 
 In essence, use `Flow` when dealing with asynchronous data streams and you need non-blocking, concurrent processing. Use `Sequence` when you need lazy evaluation and synchronous processing of data.
+
+# Collect and Suspension:
+
+**Collecting:** The collect function on a Flow suspends the coroutine in which it is called until all values have been emitted and processed. This means that while collect is running, it waits for the entire flow to complete.
+**Asynchronous Execution:** Although collect suspends the coroutine, it doesn't block the entire thread. It only suspends the coroutine it is running in, allowing other coroutines or operations to run in parallel.
+
+## Example to understand asyncronous Flow
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun getNumbers(): Flow<Int> = flow {
+    for (i in 1..5) {
+        delay(1000) // Simulate async work
+        emit(i) // Emit the current value
+    }
+}
+
+fun main() = runBlocking {
+    // Launch a coroutine to handle the flow collection
+    val job = launch {
+        getNumbers().collect { value ->
+            println("Received: $value")
+        }
+    }
+
+    // Do other work while the flow is being collected
+    repeat(5) {
+        delay(500) // Simulate other work
+        println("Doing other work...")
+    }
+
+    job.join() // Wait for the flow collection to complete
+    println("Hello this is Shifa")
+}
+```
+# Output
+```kotlin
+Doing other work...
+Received: 1
+Doing other work...
+Doing other work...
+Received: 2
+Doing other work...
+Doing other work...
+Received: 3
+Received: 4
+Received: 5
+Hello this is Shifa
+```
+
+### Thread.sleep(): 
+Blocks the thread for a specified time, preventing any other work from being done on that thread. It's suitable for traditional blocking code but is generally avoided in concurrent or coroutine-based programming due to its inefficiency.
+
+### delay(): 
+Suspends the coroutine without blocking the thread, allowing other coroutines or tasks to proceed. It's specifically designed for use with Kotlin Coroutines and is the preferred method in asynchronous programming with coroutines
+
+# Flows are cold﻿
+Flows are cold streams similar to sequences — the code inside a flow builder does not run until the flow is collected. 
+## Example
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun simple():Flow<Int> = flow{
+    println("Flow started")
+    for (i in 1..3) {
+        delay(100)
+        emit(i)
+    }
+}
+fun main(){
+    runBlocking {
+        println("Calling Simple function")
+        val flow=simple()
+        println("calling flow")
+        flow.collect { value ->println(value)}
+        println("done")
+
+    }
+
+}
+```
+# Output
+```kotlin
+Calling Simple function
+calling flow
+Flow started
+1
+2
+3
+done
+```
+## Flow cancellation 
+The following example shows how the flow gets cancelled on a timeout when running in a 
+withTimeoutOrNull block and stops executing its code:
+```kotlin
+          
+fun simple(): Flow<Int> = flow { 
+    for (i in 1..3) {
+        delay(100)          
+        println("Emitting $i")
+        emit(i)
+    }
+}
+
+fun main() = runBlocking<Unit> {
+    withTimeoutOrNull(250) { // Timeout after 250ms 
+        simple().collect { value -> println(value) } 
+    }
+    println("Done")
+}
+```
+## Output
+```kotlin
+Emitting 1
+1
+Emitting 2
+2
+Done
+```
+
+## Flow builders﻿
+1. The flow { ... } builder from the previous examples is the most basic one. There are other builders that allow flows to be declared:
+
+### FlowOf
+2. The flowOf builder defines a flow that emits a fixed set of values.
+-  The flowOf builder is used to create a flow that emits a fixed set of values. This is useful when you know in advance what values you want to emit and you want to create a simple flow from them.
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun main() = runBlocking {
+    // Using flowOf to create a flow emitting a fixed set of values
+    val myFlow = flowOf(1, 2, 3, 4, 5)
+    
+    myFlow.collect { value ->
+        println("Received: $value")
+    }
+}
+```
+
+3. Various collections and sequences can be converted to flows using the .asFlow() extension function.
+```kotin
+
+fun main()=runBlocking {
+    val myList = listOf(1, 2, 3, 4, 5)
+    val myFlow = myList.asFlow()
+    myFlow.collect {
+        println(it)
+    }
+}
+```
+## Flow operators﻿
+Flows can be transformed using operators, in the same way as you would transform collections and sequences.
+## Two types of Operators
+#### 1. Terminal Operator
+#### 2. Non-Terminal Operator
+
+### Terminal Operators
+All terminal operators are suspend functions,flow of chain ma sb sy last ma caqll huty hein
+1) .Collect()
+2) .first()
+3) .toList()
+### Non-Terminal Operator(Intermediate Operators)
+In Kotlin's `Flow`, operators are categorized into terminal and non-terminal operators. Understanding the difference between these two types is crucial for effectively working with flows.
+
+### Non-Terminal Operators
+
+Non-terminal operators, also known as intermediate operators, transform the flow but do not trigger the collection of data by themselves. They define how the data will be processed when it is eventually collected. Non-terminal operators are lazy; they are not executed until a terminal operator triggers the collection.
+
+**Examples of Non-Terminal Operators:**
+1. **`map`**: Transforms each emitted value.
+   ```kotlin
+   val flow = flowOf(1, 2, 3)
+       .map { it * 2 } // Transforms each value
+   ```
+
+2. **`filter`**: Filters values based on a condition.
+   ```kotlin
+   val flow = flowOf(1, 2, 3, 4, 5)
+       .filter { it % 2 == 0 } // Only even numbers
+   ```
+
+3. **`take`**: Limits the number of emitted values.
+   ```kotlin
+   val flow = flowOf(1, 2, 3, 4, 5)
+       .take(3) // Takes the first 3 values
+   ```
+
+4. **`flatMapConcat`**: Flattens the results of a flow of flows into a single flow.
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun main() = runBlocking {
+    // Define a flow that emits 1, 2, 3
+    val flow = flowOf(1, 2, 3)
+        .flatMapConcat { value ->
+            // For each value, create a new flow that emits the value and the value multiplied by 10
+            flowOf(value, value * 10)
+        }
+
+    // Collect and print the values emitted by the flow
+    flow.collect { emittedValue ->
+        println(emittedValue)
+    }
+}
+```
+
+5. **`zip`**: Combines values from two flows into pairs.
+6. zip: Combines elements from flow1 and flow2 into pairs.
+Lambda Function: zip takes a lambda function that specifies how to combine elements from both flows.
+```kotlin
+   import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun main() = runBlocking {
+    // Define a flow that emits 1, 2, 3
+
+    val flow1 = flowOf(1, 2, 3)
+    val flow2 = flowOf('a', 'b', 'c')
+    val zippedFlow = flow1.zip(flow2) { num, char -> "$num is equal to $char" }
+    zippedFlow.collect{
+        println(it)
+    }
+
+}
+```
+
+### Terminal Operators
+
+Terminal operators are responsible for collecting the flow and triggering the execution of intermediate operations. They end the flow chain and produce a result or perform a side effect.
+
+**Examples of Terminal Operators:**
+1. **`collect`**: Collects and processes the emitted values.
+   ```kotlin
+   flowOf(1, 2, 3)
+       .collect { value -> println(value) }
+   ```
+
+2. **`toList`**: Collects all emitted values into a list.
+   ```kotlin
+   val list = flowOf(1, 2, 3).toList()
+   println(list) // Output: [1, 2, 3]
+   ```
+
+3. **`single`**: Collects a single value and throws an exception if there are more or fewer values.
+   ```kotlin
+   val value = flowOf(42).single()
+   println(value) // Output: 42
+   ```
+
+4. **`reduce`**: Reduces the emitted values to a single value.
+   ```kotlin
+   val sum = flowOf(1, 2, 3, 4).reduce { acc, value -> acc + value }
+   println(sum) // Output: 10
+   ```
+
+5. **`first`**: Retrieves the first value from the flow.
+   ```kotlin
+   val firstValue = flowOf(1, 2, 3).first()
+   println(firstValue) // Output: 1
+   ```
+
+### Summary
+
+- **Non-Terminal Operators**: Intermediate operations that define how data is transformed or processed but do not trigger the flow collection. Examples include `map`, `filter`, and `take`.
+- **Terminal Operators**: End the flow chain by collecting the data or producing a result. Examples include `collect`, `toList`, and `reduce`.
+
+Using these operators effectively allows you to manipulate and work with asynchronous data streams in Kotlin.
+### Transform 
+It can be used to imitate simple transformations like map and filter, as well as implement more complex transformations. Using the transform operator, we can emit arbitrary values an arbitrary number of times
+```kotlin
+suspend fun performRequest(request: Int): String {
+    delay(1000) // imitate long-running asynchronous work
+    return "response $request"
+}
+
+fun main() = runBlocking<Unit> {
+
+    (1..3).asFlow() // a flow of requests
+        .transform { request ->
+            emit("Making request $request") 
+            emit(performRequest(request)) 
+        }
+        .collect { response -> println(response) }
+
+}
+```
+## Output
+```kotlin
+Making request 1
+response 1
+Making request 2
+response 2
+Making request 3
+response 3
+```
