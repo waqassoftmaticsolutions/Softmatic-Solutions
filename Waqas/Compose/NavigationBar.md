@@ -42,6 +42,19 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
+fun Greeting(name: String) {
+    Surface(color = MaterialTheme.colorScheme.primary){
+        Text(
+            text = "Hello $name!",
+            modifier = Modifier.padding(10.dp),
+            color = white
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, widthDp = 320)
+@Composable
 fun MyApp(){
     Surface(color = MaterialTheme.colorScheme.primary){
         Greeting(name = "Muhammad Waqas")
